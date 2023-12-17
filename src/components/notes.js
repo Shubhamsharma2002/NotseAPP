@@ -1,9 +1,20 @@
+import { useState } from "react";
+
 //Blogging App using Hooks
+
 export default function Blog(){
-    
+     const[title, SetTitle] = useState("");
+     const[content, SetContent] = useState("");
+     const [ blogs, setBlogs] = useState([]);
+
     //Passing the synthetic event as argument to stop refreshing the page on submit
     function handleSubmit(e){
         e.preventDefault();
+
+        setBlogs([{title,content},...blogs]);
+        SetTitle("");
+        SetContent("");
+        console.log(blogs);
     }
 
     return(
@@ -20,13 +31,15 @@ export default function Blog(){
                 {/* Row component to create a row for first input field */}
                 <Row label="Title">
                         <input className="input"
-                                placeholder="Enter the Title of the Blog here.."/>
+                                placeholder="Enter the Title of the Blog here.."
+                                value={title}  onChange={(e) => SetTitle(e.target.value)}
+                                />
                 </Row >
 
                 {/* Row component to create a row for Text area field */}
                 <Row label="Content">
                         <textarea className="input content"
-                                placeholder="Content of the Blog goes here.."/>
+                                placeholder="Content of the Blog goes here.." value={content} onChange={(e) => SetContent(e.target.value)}/>
                 </Row >
 
                 {/* Button to submit the blog */}            
@@ -39,7 +52,12 @@ export default function Blog(){
 
         {/* Section where submitted blogs will be displayed */}
         <h2> Blogs </h2>
-        
+            {blogs.map((blog,i) =>(
+              <div className="blog" key={i}> 
+                 <h3>{blog.title}</h3>
+                 <p>{blog.content}</p>
+              </div>
+            ))}
         </>
         )
     }
